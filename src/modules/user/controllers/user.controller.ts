@@ -1,11 +1,6 @@
 import { UserRegisterService } from "./../services/userRegister/userRegister.service";
-import {
-  PrismaUserRepository,
-  PrismaUserRepository,
-} from "./../repositories/prisma/prisma-user.repository";
-import { prisma } from "@/lib/prisma";
+import { PrismaUserRepository } from "./../repositories/prisma/prisma-user.repository";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { hash } from "bcryptjs";
 import { z } from "zod";
 import { UsernameAlreadyExistsError } from "../services/errors/username-already-exists";
 import { EmailAlreadyExistsError } from "../services/errors/email-already-exists";
