@@ -7,11 +7,11 @@ import { EmailAlreadyExistsError } from "../errors/email-already-exists";
 describe("User Register Service", () => {
   it("should not be able to register with same email", async () => {
     const usersRepository = new InMemoryUserRepository();
-    const userRegisterService = new UserRegisterService(usersRepository);
+    const sut = new UserRegisterService(usersRepository);
 
     const email = "anderson@gmail.com";
 
-    await userRegisterService.execute({
+    await sut.execute({
       name: "Anderson Alves",
       email,
       password: "123456",
@@ -20,7 +20,7 @@ describe("User Register Service", () => {
     });
 
     await expect(() =>
-      userRegisterService.execute({
+      sut.execute({
         name: "Anderson Alves",
         email,
         password: "123456",
@@ -32,11 +32,11 @@ describe("User Register Service", () => {
 
   it("should not be able to register with same username", async () => {
     const usersRepository = new InMemoryUserRepository();
-    const userRegisterService = new UserRegisterService(usersRepository);
+    const sut = new UserRegisterService(usersRepository);
 
     const username = "anderson.alves";
 
-    await userRegisterService.execute({
+    await sut.execute({
       name: "Anderson Alves",
       email: "anderson@test.com",
       password: "123456",
@@ -45,7 +45,7 @@ describe("User Register Service", () => {
     });
 
     await expect(() =>
-      userRegisterService.execute({
+      sut.execute({
         name: "Anderson Alves",
         email: "anderso2n@test.com",
         password: "123456",
