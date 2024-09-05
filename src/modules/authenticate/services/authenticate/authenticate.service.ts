@@ -1,6 +1,6 @@
 import { UserRepository } from "@/modules/user/repositories/interface/user.repository";
 import { InvalidCredentialsError } from "../errors/invalid-credentials-error";
-import { compare } from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import { User } from "@prisma/client";
 
 interface AuthenticateServiceReuqest {
@@ -25,7 +25,7 @@ export class AuthenticateService {
       throw new InvalidCredentialsError();
     }
 
-    const isPasswordsEquals = await compare(password, user.password);
+    const isPasswordsEquals = await bcryptjs.compare(password, user.password);
 
     if (!isPasswordsEquals) {
       throw new InvalidCredentialsError();
