@@ -1,7 +1,14 @@
+import { UserRegisterService } from "./../services/userRegister/userRegister.service";
+import {
+  PrismaUserRepository,
+  PrismaUserRepository,
+} from "./../repositories/prisma/prisma-user.repository";
 import { prisma } from "@/lib/prisma";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { hash } from "bcryptjs";
 import { z } from "zod";
+import { UsernameAlreadyExistsError } from "../services/errors/username-already-exists";
+import { EmailAlreadyExistsError } from "../services/errors/email-already-exists";
 
 export async function userRegister(
   request: FastifyRequest,
@@ -15,40 +22,24 @@ export async function userRegister(
     email: z.string(),
   });
 
-  const { email, name, password, perfil, username } =
-    userRegisterBodySchema.parse(request.body);
+  const data = userRegisterBodySchema.parse(request.body);
 
-  const password_hash = await hash(password, 6);
+  try {
+    const prismaUserRepository = new PrismaUserRepository();
+    const userRegisterService = new UserRegisterService(prismaUserRepository);
 
-  const userWithSameEmail = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
+    await userRegisterService.execute(data);
+  } catch (error) {
+    if (error instanceof UsernameAlreadyExistsError) {
+      return reply.status(409).send({ message: error.message });
+    }
 
-  if (userWithSameEmail) {
-    return reply.status(409).send();
+    if (error instanceof EmailAlreadyExistsError) {
+      return reply.status(409).send({ message: error.message });
+    }
+
+    throw error;
   }
-
-  const userWithSameUsername = await prisma.user.findUnique({
-    where: {
-      username,
-    },
-  });
-
-  if (userWithSameUsername) {
-    return reply.status(409).send();
-  }
-
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: password_hash,
-      perfil,
-      username,
-    },
-  });
 
   return reply.status(201).send();
 }
