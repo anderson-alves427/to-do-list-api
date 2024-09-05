@@ -43,8 +43,8 @@ model Task {
   user          User       @relation(fields: [user_id], references: [id])
   user_id       String
   updated_at    DateTime?
-  group_Task    Group_Task @relation(fields: [group_Task_id], references: [id])
-  group_Task_id String
+  group_Task    Group_Task @relation(fields: [group_task_id], references: [id])
+  group_task_id String
 
   @@map("task")
 }
