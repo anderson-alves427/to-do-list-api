@@ -6,4 +6,6 @@ export interface TaskRepository {
   delete(id: string): Promise<void>;
 
   findById(id: string): Promise<Task | null>;
+
+  update(id: string, data: Prisma.TaskUncheckedUpdateInput): Promise<Task>;
 }

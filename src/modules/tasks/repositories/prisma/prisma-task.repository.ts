@@ -4,11 +4,11 @@ import { prisma } from "@/lib/prisma";
 
 export class PrismaTaskRepository implements TaskRepository {
   async create(data: Prisma.TaskUncheckedCreateInput): Promise<Task> {
-    const user = await prisma.task.create({
+    const task = await prisma.task.create({
       data,
     });
 
-    return user;
+    return task;
   }
 
   async delete(id: string): Promise<void> {
@@ -27,5 +27,23 @@ export class PrismaTaskRepository implements TaskRepository {
     });
 
     return taskSameId;
+  }
+
+  async update(
+    id: string,
+    data: Prisma.TaskUncheckedUpdateInput
+  ): Promise<Task> {
+    const task = await prisma.task.update({
+      where: {
+        id,
+      },
+      data: {
+        ...data,
+        id,
+        updated_at: new Date(),
+      },
+    });
+
+    return task;
   }
 }

@@ -16,6 +16,7 @@ export async function deleteTask(request: FastifyRequest, reply: FastifyReply) {
     const createTaskService = new DeleteTaskService(prismaTaskRepository);
 
     await createTaskService.execute(id);
+    return reply.status(204).send();
   } catch (error) {
     if (error instanceof ThereIsNoRegisteredTaskError) {
       return reply.status(404).send({ message: error.message });
@@ -23,6 +24,4 @@ export async function deleteTask(request: FastifyRequest, reply: FastifyReply) {
 
     throw error;
   }
-
-  return reply.status(201).send();
 }
