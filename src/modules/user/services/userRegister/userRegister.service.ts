@@ -8,13 +8,13 @@ interface UserRegisterServicerRequest {
   email: string;
   password: string;
   username: string;
-  perfil: string;
+  role: "BASIC_MEMBER" | "ADMIN";
 }
 
 interface UserRegisterServicerResponse {
   name: string;
   email: string;
-  perfil: string;
+  role: string;
   username: string;
 }
 
@@ -39,7 +39,7 @@ export class UserRegisterService {
       throw new UsernameAlreadyExistsError();
     }
 
-    const { name, email, username, perfil } = await this.userRepository.create({
+    const { name, email, username, role } = await this.userRepository.create({
       ...data,
       password: password_hash,
     });
@@ -48,7 +48,7 @@ export class UserRegisterService {
       email,
       name,
       username,
-      perfil,
+      role,
     };
   }
 }

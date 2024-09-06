@@ -1,7 +1,11 @@
-import { Prisma, User } from "@prisma/client";
+import { $Enums, Prisma, User } from "@prisma/client";
+
+type UserCreateInputWithRole = Omit<Prisma.UserCreateInput, 'role'> & {
+  role: $Enums.ROLE;
+};
 
 export interface UserRepository {
-  create(data: Prisma.UserCreateInput): Promise<User>;
+  create(data: UserCreateInputWithRole): Promise<User>;
 
   findByEmail(email: string): Promise<User | null>;
 

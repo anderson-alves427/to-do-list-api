@@ -2,7 +2,7 @@ import "@fastify/jwt";
 
 declare module "@fastify/jwt" {
   interface FastifyJWT {
-    payload: { name: string; perfil: string };
+    payload: { name: string; role: "ADMIN" | "BASIC_MEMBER" };
     user: {
       sub: number;
     };

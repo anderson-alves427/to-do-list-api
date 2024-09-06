@@ -20,7 +20,7 @@ describe("User Register Service", () => {
       name: "Anderson Alves",
       email,
       password: "123456",
-      perfil: "A",
+      role: "BASIC_MEMBER",
       username: "anderson",
     });
 
@@ -29,7 +29,7 @@ describe("User Register Service", () => {
         name: "Anderson Alves",
         email,
         password: "123456",
-        perfil: "A",
+        role: "BASIC_MEMBER",
         username: "anderson",
       })
     ).rejects.toBeInstanceOf(EmailAlreadyExistsError);
@@ -42,7 +42,7 @@ describe("User Register Service", () => {
       name: "Anderson Alves",
       email: "anderson@test.com",
       password: "123456",
-      perfil: "A",
+      role: "BASIC_MEMBER",
       username: username,
     });
 
@@ -51,7 +51,7 @@ describe("User Register Service", () => {
         name: "Anderson Alves",
         email: "anderso2n@test.com",
         password: "123456",
-        perfil: "A",
+        role: "BASIC_MEMBER",
         username: username,
       })
     ).rejects.toBeInstanceOf(UsernameAlreadyExistsError);

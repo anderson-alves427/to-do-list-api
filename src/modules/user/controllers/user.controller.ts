@@ -13,7 +13,7 @@ export async function userRegister(
     name: z.string(),
     username: z.string(),
     password: z.string(),
-    perfil: z.string(),
+    role: z.enum(["BASIC_MEMBER", "ADMIN"]).default("BASIC_MEMBER"),
     email: z.string(),
   });
 

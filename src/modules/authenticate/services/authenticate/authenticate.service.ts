@@ -8,7 +8,7 @@ interface AuthenticateServiceReuqest {
   password: string;
 }
 
-interface AuthenticateServiceResponse extends User {}
+type AuthenticateServiceResponse = User;
 
 export class AuthenticateService {
   constructor(private useRepository: UserRepository) {}

@@ -24,7 +24,7 @@ export async function authenticate(
     const token = await reply.jwtSign(
       {
         name: user.name,
-        perfil: user.perfil,
+        role: user.role,
       },
       {
         sign: {
