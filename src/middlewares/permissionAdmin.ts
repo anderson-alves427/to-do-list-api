@@ -7,6 +7,6 @@ export async function permissionAdmin(
   const { role } = request.user;
 
   if (role !== "ADMIN") {
-    return reply.status(401).send({ message: "Unauthorized" });
+    return reply.status(403).send({ message: "Unauthorized" });
   }
 }
