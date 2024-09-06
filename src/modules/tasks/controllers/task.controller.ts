@@ -32,7 +32,6 @@ export async function taskRegister(
         message: "Data inválida",
       }),
 
-    user_id: z.string(),
     group_task_id: z.string(),
   });
 
@@ -48,7 +47,7 @@ export async function taskRegister(
       prismaGroupTaskRepository
     );
 
-    await createTaskService.execute({...data, user_id: request.user.sub});
+    await createTaskService.execute({ ...data, user_id: request.user.sub });
   } catch (error) {
     if (error instanceof ThereIsNoRegisteredUserError) {
       return reply.status(404).send({ message: error.message });
