@@ -19,7 +19,24 @@ export async function authenticate(
     const prismaUserRepository = new PrismaUserRepository();
     const userRegisterService = new AuthenticateService(prismaUserRepository);
 
-    await userRegisterService.execute(data);
+    const user = await userRegisterService.execute(data);
+
+    const token = await reply.jwtSign(
+      {
+        name: user.name,
+        perfil: user.perfil,
+      },
+      {
+        sign: {
+          sub: user.id,
+        },
+      }
+    );
+
+    return reply.status(201).send({
+      user,
+      token,
+    });
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: error.message });
@@ -27,6 +44,4 @@ export async function authenticate(
 
     throw error;
   }
-
-  return reply.status(201).send();
 }

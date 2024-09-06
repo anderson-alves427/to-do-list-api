@@ -26,7 +26,7 @@ describe("Authenticate Service", () => {
       username: "anderson",
     });
 
-    const { user } = await sut.execute({
+    const user = await sut.execute({
       username: "anderson",
       password: "teste@123",
     });

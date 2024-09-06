@@ -8,9 +8,7 @@ interface AuthenticateServiceReuqest {
   password: string;
 }
 
-interface AuthenticateServiceResponse {
-  user: User;
-}
+interface AuthenticateServiceResponse extends User {}
 
 export class AuthenticateService {
   constructor(private useRepository: UserRepository) {}
@@ -31,8 +29,6 @@ export class AuthenticateService {
       throw new InvalidCredentialsError();
     }
 
-    return {
-      user,
-    };
+    return user;
   }
 }
