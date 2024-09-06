@@ -35,6 +35,8 @@ export async function authenticate(
 
     return reply.status(201).send({
       ...user,
+      email: undefined,
+      username: undefined,
       password: undefined,
       token,
     });
