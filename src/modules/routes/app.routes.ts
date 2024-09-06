@@ -11,10 +11,8 @@ export async function appRoutes(app: FastifyInstance) {
   app.post("/user", userRegister);
   app.post("/authenticate", authenticate);
 
-  app.post("/task", taskRegister);
-  app.get("/task", listTask);
-  app.put("/task", updateTask);
-  app.delete("/task/:id", deleteTask);
-
-  // app.post("/tarefas", {onRequest: [verifyJWT]},tarefas);
+  app.post("/task", { onRequest: [verifyJWT] }, taskRegister);
+  app.get("/task", { onRequest: [verifyJWT] }, listTask);
+  app.put("/task", { onRequest: [verifyJWT] }, updateTask);
+  app.delete("/task/:id", { onRequest: [verifyJWT] }, deleteTask);
 }
