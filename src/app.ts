@@ -22,6 +22,5 @@ app.setErrorHandler((error, _request, reply) => {
 
   if (env.NODE_ENV !== "production") {
     console.log(error);
-  } else {
   }
 });
