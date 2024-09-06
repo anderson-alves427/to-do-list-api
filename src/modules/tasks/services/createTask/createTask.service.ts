@@ -7,7 +7,7 @@ import { ThereIsNoRegisteredGroupError } from "../errors/there-is-no-registered-
 interface CreateTaskServiceRequest {
   title: string;
   description: string;
-  deadline: Date | string | undefined | null;
+  deadline?: Date | string | null;
   group_task_id: string;
   user_id: string;
 }

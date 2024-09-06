@@ -14,13 +14,24 @@ export async function taskRegister(
   const taskBodySchema = z.object({
     title: z.string().max(150),
     description: z.string().max(1000),
-    deadline: z.preprocess(
-      (arg) =>
-        typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg, // Converte string para Date
-      z.date().refine((date) => !isNaN(date.getTime()), {
-        message: "Data está inválida",
-      }) // Verifica se a data é válida
-    ),
+    deadline: z
+      .preprocess(
+        (arg) => {
+          // Se o argumento é uma string ou Date, tenta converter em uma data válida
+          if (typeof arg === "string" || arg instanceof Date) {
+            const date = new Date(arg);
+            return isNaN(date.getTime()) ? null : date;
+          }
+          // Retorna null para valores null ou undefined
+          return arg === null || arg === undefined ? null : arg;
+        },
+        // Define que o valor pode ser Date, null ou undefined
+        z.date().nullable().optional()
+      )
+      .refine((date) => date === null || !isNaN(date!.getTime()), {
+        message: "Data inválida",
+      }),
+
     user_id: z.string(),
     group_task_id: z.string(),
   });
@@ -37,7 +48,7 @@ export async function taskRegister(
       prismaGroupTaskRepository
     );
 
-    await createTaskService.execute(data);
+    await createTaskService.execute({...data, user_id: request.user.sub});
   } catch (error) {
     if (error instanceof ThereIsNoRegisteredUserError) {
       return reply.status(404).send({ message: error.message });

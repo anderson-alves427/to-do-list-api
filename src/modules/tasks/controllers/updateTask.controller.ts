@@ -9,7 +9,17 @@ export async function updateTask(request: FastifyRequest, reply: FastifyReply) {
     id: z.string(),
     title: z.optional(z.string()),
     description: z.optional(z.string()),
-    deadline: z.optional(z.date()),
+    deadline: z
+      .preprocess((arg) => {
+        if (typeof arg === "string" || arg instanceof Date) {
+          const date = new Date(arg);
+          return isNaN(date.getTime()) ? null : date;
+        }
+        return arg === null || arg === undefined ? null : arg;
+      }, z.date().nullable().optional())
+      .refine((date) => date === null || !isNaN(date!.getTime()), {
+        message: "Data inválida",
+      }),
     group_task_id: z.optional(z.string()),
     user_id: z.optional(z.string()),
   });
