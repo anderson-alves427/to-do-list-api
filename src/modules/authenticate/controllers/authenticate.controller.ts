@@ -34,7 +34,8 @@ export async function authenticate(
     );
 
     return reply.status(201).send({
-      user,
+      ...user,
+      password: undefined,
       token,
     });
   } catch (error) {
