@@ -1,3 +1,4 @@
+import { TaskRepository } from "./../../repositories/interfaces/task.repository";
 import { GroupTaskRepository } from "@/modules/groupTask/repositories/interfaces/group-task.repository";
 import { TasksByUser } from "../interfaces/tasksByUser";
 
@@ -7,17 +8,37 @@ interface ListTaskByUserServiceRequest {
   size: number;
 }
 
+interface ListTaskByUserServiceResponse {
+  total: number;
+  page: number;
+  size: number;
+  data: TasksByUser[];
+}
+
 export class ListTaskByUserService {
-  constructor(private groupTaskRepository: GroupTaskRepository) {}
+  constructor(
+    private groupTaskRepository: GroupTaskRepository,
+    private taskRepository: TaskRepository
+  ) {}
 
   async execute({
     page,
     size,
     user_id,
-  }: ListTaskByUserServiceRequest): Promise<TasksByUser[]> {
+  }: ListTaskByUserServiceRequest): Promise<ListTaskByUserServiceResponse> {
     const skip = (page - 1) * size;
     const take = size;
 
+    const totalTasks = await this.taskRepository.totalTasksByUser(user_id);
+
+    if (!totalTasks) {
+      return {
+        page,
+        size,
+        total: totalTasks,
+        data: [],
+      };
+    }
     const tasks = await this.groupTaskRepository.getTasksByUserId(
       user_id,
       skip,
@@ -36,6 +57,11 @@ export class ListTaskByUserService {
       })),
     }));
 
-    return formattedData;
+    return {
+      page,
+      size,
+      total: totalTasks,
+      data: formattedData,
+    };
   }
 }

@@ -1,6 +1,7 @@
 import { Group_Task } from "@prisma/client";
 import { GroupTaskRepository } from "../interfaces/group-task.repository";
 import { prisma } from "@/lib/prisma";
+import { TasksByUser } from "@/modules/tasks/services/interfaces/tasksByUser";
 
 export class PrismaGroupTaskRepository implements GroupTaskRepository {
   async findById(id: string): Promise<Group_Task | null> {
@@ -48,5 +49,4 @@ export class PrismaGroupTaskRepository implements GroupTaskRepository {
 
     return tasks;
   }
-
 }
