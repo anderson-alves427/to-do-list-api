@@ -35,7 +35,7 @@ export class CreateTaskService {
     const existsGroupTask = await this.groupTaskRepository.findById(
       data.group_task_id
     );
-    console.log('asdff', existsGroupTask)
+
     if (!existsGroupTask) {
       throw new ThereIsNoRegisteredGroupError();
     }

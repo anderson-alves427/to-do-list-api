@@ -10,4 +10,22 @@ export class PrismaTaskRepository implements TaskRepository {
 
     return user;
   }
+
+  async delete(id: string): Promise<void> {
+    await prisma.task.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findById(id: string): Promise<Task | null> {
+    const taskSameId = await prisma.task.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return taskSameId;
+  }
 }

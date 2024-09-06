@@ -6,6 +6,7 @@ import { PrismaTaskRepository } from "../repositories/prisma/prisma-task.reposit
 import { ThereIsNoRegisteredUserError } from "../services/errors/there-is-no-registered-user-error";
 import { ThereIsNoRegisteredGroupError } from "../services/errors/there-is-no-registered-group-error";
 import { PrismaGroupTaskRepository } from "@/modules/groupTask/repositories/prisma/prisma-group-task.repository";
+
 export async function taskRegister(
   request: FastifyRequest,
   reply: FastifyReply
@@ -16,11 +17,9 @@ export async function taskRegister(
     deadline: z.preprocess(
       (arg) =>
         typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg, // Converte string para Date
-      z
-        .date()
-        .refine((date) => !isNaN(date.getTime()), {
-          message: "Data está inválida",
-        }) // Verifica se a data é válida
+      z.date().refine((date) => !isNaN(date.getTime()), {
+        message: "Data está inválida",
+      }) // Verifica se a data é válida
     ),
     user_id: z.string(),
     group_task_id: z.string(),
