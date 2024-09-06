@@ -3,8 +3,17 @@ import { InMemoryUserRepository } from "@/modules/user/repositories/in-memory/in
 import { describe, expect, it } from "vitest";
 import { AuthenticateService } from "./authenticate.service";
 import { InvalidCredentialsError } from "../errors/invalid-credentials-error";
+import { beforeEach } from "node:test";
+
+let usersRepository: InMemoryUserRepository;
+let sut: AuthenticateService;
 
 describe("Authenticate Service", () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUserRepository();
+    sut = new AuthenticateService(usersRepository);
+  });
+
   it("should be able authenticate", async () => {
     const usersRepository = new InMemoryUserRepository();
     const sut = new AuthenticateService(usersRepository);
